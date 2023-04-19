@@ -49,13 +49,13 @@ jobs:
             
       # Runs a single command using the runners shell
       - name: 'Set up Python'
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
            python-version: 3.8
       - name: 'Install requirements'
         run: |
-          pip install --upgrade pip
-          pip install -r ./requirements.txt
+          pip install --upgrade pip >> $GITHUB_STATE
+          pip install -r ./requirements.txt >> $GITHUB_OUTPUT
               
       - name: 'Working'
         run: |
