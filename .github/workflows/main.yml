@@ -54,8 +54,8 @@ jobs:
            python-version: 3.8
       - name: 'Install requirements'
         run: |
-          pip install --upgrade pip >> $GITHUB_STATE
-          pip install -r ./requirements.txt >> $GITHUB_OUTPUT
+          pip install --upgrade pip
+          pip install -r ./requirements.txt
               
       - name: 'Working'
         run: |
