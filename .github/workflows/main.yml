@@ -34,13 +34,14 @@ jobs:
         with:
           ref: 3b1b7a5973041862bf059b73a44abe31eb1f4e64
         
-      - uses: actions/cache@v3
+      - name: "Cache Python Requirements"
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
           
-      - name: Cache Flutter dependencies
+      - name: "Cache Browser driver"
         uses: actions/cache@v2
         with:
           path: ~/.wdm
