@@ -30,7 +30,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: 3b1b7a5973041862bf059b73a44abe31eb1f4e64
         
@@ -42,7 +42,7 @@ jobs:
           restore-keys: ${{ runner.os }}-pip-
           
       - name: "Cache Browser driver"
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.wdm
           key: ${{ runner.os }}-driver-cache-${{ hashFiles('**/requirements.txt') }}
@@ -50,7 +50,7 @@ jobs:
             
       # Runs a single command using the runners shell
       - name: 'Set up Python'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
            python-version: 3.8
       - name: 'Install requirements'
