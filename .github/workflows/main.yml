@@ -1,0 +1,63 @@
+name: Worker
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  #push:
+  #  branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+  #schedule:
+  #  - cron: '35 16 * * *'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      accounts:
+        type: string
+        required: true
+        description: 'accounts arrays'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    # Set the workflow time to 50 minutes
+    timeout-minutes: 50
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+          
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.wdm
+          key: ${{ runner.os }}-driver-cache-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-driver-cache-
+            
+      # Runs a single command using the runners shell
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+           python-version: 3.8
+      - name: 'Install requirements'
+        run: |
+          pip install --upgrade pip
+          pip install -r ./requirements.txt
+              
+      - name: 'Working'
+        run: |
+          # 创建accounts文件
+          printf '''${{ inputs.accounts }}''' > accounts.json
+          # 执行Farmer
+          if [[ -z ${{ secrets.BOT_TOKEN }} || -z ${{ secrets.BOT_CHATID }} ]];then python run.py --headless --superfast --currency CNY --no-images --dont-check-for-updates --skip-unusual;else python run.py --headless --superfast --currency CNY --no-images --dont-check-for-updates --skip-unusual --telegram ${{ secrets.BOT_TOKEN }} ${{ secrets.BOT_CHATID }};fi
