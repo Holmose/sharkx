@@ -31,6 +31,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: 3b1b7a5973041862bf059b73a44abe31eb1f4e64
         
       - uses: actions/cache@v3
         with:
